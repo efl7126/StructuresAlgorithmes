@@ -24,6 +24,7 @@ void traiterCommandeApprov(Carte& carte, const string& nomEpicerie, const string
 void traiterCommandeInventaire(Carte& carte, const string& nomEpicerie);
 void traiterCommandeRecommander(Carte& carte, PointST& position, int nbMaxEpicerie,
 double distanceMaximale, Commande cmd);
+void traiterCommandeRamasser(Carte& carte, Commande cmd, Tableau<string>& tabEpiceries);
 
 
 int tp2(istream& entree){
@@ -48,18 +49,27 @@ int tp2(istream& entree){
             
             traiterCommandeRecommander(carte, p, nbMaxEpiceries, maxdistance, c);
             
-            cout << "IMPOSSIBLE";
         }else if(typecommande=="RAMASSER"){
+            
+            Tableau<string> tabEpiceries;
+            
             Commande c;
             entree >> c;
             string nomepicerie;
             entree >> nomepicerie;
-            while(entree && nomepicerie!=";"){
+            tabEpiceries.ajouter(nomepicerie);
+            
+            while(entree && nomepicerie!=";" && nomepicerie!=" ;" && nomepicerie!="; "){
                 // À compléter
                 entree >> nomepicerie;
+                
+                tabEpiceries.ajouter(nomepicerie);
             }
             // À compléter
-            cout << "COMPLET";
+            
+            traiterCommandeRamasser(carte, c, tabEpiceries);
+            
+            //cout << "COMPLET";
         }else if(typecommande=="APPROV"){
             string nomepicerie;
             char deuxpoints=0;
@@ -159,12 +169,17 @@ void traiterCommandeInventaire(Carte& carte, const string& nomEpicerie)
 }
 
 void traiterCommandeRecommander(Carte& carte, PointST& position, int nbMaxEpicerie,
-double distanceMaximale, Commande cmd)
+double distanceTotalMax, Commande cmd)
 {
 	carte.peuplerTableauEpiceries();	
-	carte.genererCombinaisons();
+	carte.genererCombinaisons(nbMaxEpicerie);
 	carte.evaluerCombinaisons(cmd);
-	carte.trouverCheminLePlusCourt();
+	carte.trouverCheminLePlusCourt(position, distanceTotalMax);
+	carte.viderTableaux();
 }
 
+void traiterCommandeRamasser(Carte& carte, Commande cmd, Tableau<string>& tabEpiceries)
+{
+	carte.ramasserProduits(tabEpiceries, cmd);
+}
 

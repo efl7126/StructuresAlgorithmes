@@ -26,6 +26,14 @@ double PointST::distance(const PointST& point) const {
   return 2*RAYON_TERRE * asin(sqrt(s1*s1 + cos(latitude)*cos(point.latitude)*s2*s2));
 }
 
+PointST& PointST::operator = (const PointST& autre)
+{
+	latitude = autre.latitude;
+	longitude = autre.longitude;
+	
+	return *this;
+}
+
 std::ostream& operator << (std::ostream& os, const PointST& point) {
   os << "(" 
      << (point.latitude * 180.0 / PI)

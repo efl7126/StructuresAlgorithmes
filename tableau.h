@@ -301,7 +301,7 @@ void Tableau<T>::afficher() const
     {
     	std::cout << elements[i] << " ";
     }
-    std::cout << "  ";
+    std::cout << std::endl;
 }
 
 
