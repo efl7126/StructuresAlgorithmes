@@ -28,8 +28,8 @@ class Graphe{
     void parcoursRechercheLargueur(const S& s) const;
    
     void extraireCompostantesConnexes() const;
-	void tarjan(queue<set<S> >& partition);
-	void tarjanAffichage(queue<set<S> >& partition);
+	void tarjan(list<set<S> >& partition);
+	void tarjanAffichage(list<set<S> >& partition);
 
 	
   private:
@@ -53,7 +53,7 @@ class Graphe{
     };
     
     void tarjanParcoursProfondeur(Sommet& v, int& compteur, stack<S>& chemin, 
-	queue<set<S> >& partition);
+	list<set<S> >& partition);
     
     map<S, Sommet> sommets; // identification --> sommet
 };
@@ -278,7 +278,7 @@ void Graphe<S>::extraireCompostantesConnexes() const{
 
 
 template <class S>
-void Graphe<S>::tarjan(queue<set<S> >& partition) {
+void Graphe<S>::tarjan(list<set<S> >& partition) {
 	
 	int compteur = 0;
 	
@@ -308,7 +308,7 @@ void Graphe<S>::tarjan(queue<set<S> >& partition) {
 
 template <class S>
 void Graphe<S>::tarjanParcoursProfondeur(Sommet& v, int& compteur, stack<S>& chemin, 
-	queue<set<S> >& partition) {
+	list<set<S> >& partition) {
 	
 	v.num = compteur++;
 	v.min = v.num;
@@ -379,13 +379,14 @@ void Graphe<S>::tarjanParcoursProfondeur(Sommet& v, int& compteur, stack<S>& che
   				break;
   		}
   		
-  		partition.push(noeuds_a_parcourir);
+  		partition.push_back(noeuds_a_parcourir);
 	}
 	
 	
 	
 }
 
+/*
 template <class S>
 void Graphe<S>::tarjanAffichage(queue<set<S> >& partition) {
 
@@ -399,6 +400,7 @@ void Graphe<S>::tarjanAffichage(queue<set<S> >& partition) {
     }
     cout << endl;
 }
+*/
 
 #endif
 

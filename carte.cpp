@@ -42,16 +42,39 @@ void Carte::ajouter_route(const string& nomroute, const list<long>& noeuds){
 set<long> Carte::trouver_noeuds_inutiles() {
     // À compléter.
     
-    queue<set<long> > partition;
+    list<set<long> > partition;
     graphe.tarjan(partition);	// Algorithme de Tarjan
     //graphe.tarjanAffichage(partition);
     
     
     set<long> noeudsInutiles;
+    
+    
     set<long> composanteConnexePrincipale;
+    list<set<long> >::iterator positionComposanteConnexePrincipale;
     
     int tailleCompConnexe = 0, tailleMaxCompConnexe = 0;
     
+    
+    for(list<set<long> >::iterator iter = partition.begin(); iter != partition.end(); iter++)
+    {
+    	
+    	tailleCompConnexe = iter->size();
+    	if(tailleCompConnexe > tailleMaxCompConnexe)
+	    {
+	    	tailleMaxCompConnexe = tailleCompConnexe;
+	    	positionComposanteConnexePrincipale = iter;	// Meilleur?
+	    }
+    }
+    
+    for(list<set<long> >::iterator iter = partition.begin(); iter != partition.end(); iter++)
+    {
+    	if(iter != positionComposanteConnexePrincipale)
+    		noeudsInutiles.insert(iter->begin(), iter->end());
+    }
+    
+    
+    /*
     while(!partition.empty())
     {
     	set<long> composante = partition.front();
@@ -68,15 +91,15 @@ set<long> Carte::trouver_noeuds_inutiles() {
 	    	composanteConnexePrincipale = composante;	// Meilleur?
 	    }
     }
-    
+    */
  	
-    
+    /*
     // Retirer les noeuds de la composanteConnexePrincipale
     for(set<long>::iterator iter = noeudsInutiles.begin(); iter != noeudsInutiles.end();)
     {
     	//cout << "Noeud " << *iter;
     	// Si l'element est dans la composante connexe principale
-    	if(composanteConnexePrincipale.find(*iter) != composanteConnexePrincipale.end())
+    	if(positionComposanteConnexePrincipale->find(*iter) != positionComposanteConnexePrincipale->end())
     	{
     		//cout << "Erase ";
     		noeudsInutiles.erase(iter++);
@@ -86,7 +109,7 @@ set<long> Carte::trouver_noeuds_inutiles() {
     		
     	//cout << endl;
     }
-
+	*/
 	
 	// Affichage
 	/*
